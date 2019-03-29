@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hdkj.modules.sys.dao.SysUserDao">
+	
+	<!-- 自定义查询 -->
+	<!-- <select id="customQuery" resultType="com.hdkj.modules.sys.entity.SysUserEntity">
+		SELECT ur.*,de.NAME as deptName FROM jw_user ur
+		LEFT JOIN jw_dept de ON ur.DEPT_ID = de.DEPT_ID 
+		<where>
+		${ew.sqlSegment}
+		</where>
+	</select> -->
+
+	<!-- 查询用户的所有权限 -->
+	<select id="queryAllPerms" resultType="java.lang.String">
+		select m.perms from jw_user_role ur 
+			LEFT JOIN jw_role_menu rm on ur.role_id = rm.role_id 
+			LEFT JOIN jw_menu m on rm.menu_id = m.menu_id 
+		where ur.user_id = #{userId}
+	</select>
+
+	<!-- 密码错误次数过多修改用户状态 -->
+	<update id="updateStatus" parameterType="String">
+		UPDATE jw_user SET status=0 WHERE username=#{values}
+	</update>
+	
+	<!-- 查询用户的所有菜单ID --> 
+	<select id="queryAllMenuId" resultType="java.lang.String">
+		select distinct rm.menu_id from jw_user_role ur 
+			LEFT JOIN jw_role_menu rm on ur.role_id = rm.role_id 
+		where ur.user_id = #{userId}
+	</select>
+
+	<select id="queryUser" resultType="com.hdkj.modules.sys.entity.SysUserEntity">
+		SELECT * FROM
+		(
+		SELECT paging.*, ROWNUM RN
+		FROM (
+		select u.*, (select d.name from jw_dept d where d.dept_id = u.dept_id) deptName from jw_user u
+		<where>
+			<if test="username != null and username != ''">
+				and u.username like concat(concat('%',#{username}),'%')
+			</if>
+
+			<!--  数据过滤  -->
+			${filterSql}
+		</where>
+		<choose>
+			<when test="sidx != null and sidx.trim() != ''">
+				order by u.${sidx} ${order}
+			</when>
+			<otherwise>
+				order by u.user_id desc
+			</otherwise>
+		</choose>
+		)  paging
+		<if test="offset != null and limit != null">
+			WHERE  ROWNUM &lt;=  #{paging}
+			)
+			WHERE  RN  &gt; #{offset}
+		</if>
+	</select>
+
+	<select id="queryUserTotal" resultType="int">
+		select count(*) from jw_user u
+		<where>
+		<if test="username != null and username.trim() != ''">
+			and u.username like concat(concat('%',#{username}),'%')
+		</if>
+		</where>
+	</select>
+
+</mapper>

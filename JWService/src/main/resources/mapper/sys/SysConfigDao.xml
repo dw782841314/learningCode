@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">    
+<mapper namespace="com.hdkj.modules.sys.dao.SysConfigDao">
+
+	<!-- 根据key，更新value -->
+	<update id="updateValueByKey" parameterType="map">
+		update jw_config set param_value = #{paramValue} where param_key = #{paramKey}
+	</update>
+
+	<!-- 根据key，查询value -->
+	<select id="queryByKey" parameterType="string" resultType="com.hdkj.modules.sys.entity.SysConfigEntity">
+		select * from jw_config where param_key = #{paramKey}
+	</select>
+
+	<!-- 查询所有参数名以corpsecret开头的 -->
+	<select id="queryByKeyCorpsecret" resultType="com.hdkj.modules.sys.entity.SysConfigEntity">
+		select * from jw_config t where t.is_corpsecret = '1'
+	</select>
+
+	<!--批量根据key，更新value-->
+	<update id="updateBatchValueByKey" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" open="begin" close=";end;" separator=";">
+			UPDATE jw_config
+			<set>
+				param_value=#{item.paramValue}
+			</set>
+			<where>
+				param_key = #{item.paramKey}
+			</where>
+		</foreach>
+	</update>
+</mapper>

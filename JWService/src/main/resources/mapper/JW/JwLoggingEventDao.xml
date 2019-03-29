@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hdkj.modules.JW.dao.JwLoggingEventDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.hdkj.modules.JW.entity.JwLoggingEventEntity" id="jwLoggingEventMap">
+        <result property="logId" column="LOG_ID"/>
+        <result property="userId" column="USER_ID"/>
+        <result property="operation" column="OPERATION"/>
+        <result property="params" column="PARAMS"/>
+        <result property="returnParams" column="RETURN_PARAMS"/>
+        <result property="digitCert" column="DIGIT_CERT"/>
+        <result property="createDate" column="CREATE_DATE"/>
+        <result property="digitId" column="DIGIT_ID"/>
+        <result property="isDigit" column="IS_DIGIT"/>
+    </resultMap>
+
+
+</mapper>

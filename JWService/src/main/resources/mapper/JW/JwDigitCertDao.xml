@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hdkj.modules.JW.dao.JwDigitCertDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.hdkj.modules.JW.entity.JwDigitCertEntity" id="jwDigitCertMap">
+        <result property="digitId" column="DIGIT_ID"/>
+        <result property="digitCert" column="DIGIT_CERT"/>
+        <result property="digitCertNo" column="DIGIT_CERT_NO"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="updateTime" column="UPDATE_TIME"/>
+    </resultMap>
+
+
+</mapper>
